@@ -54,8 +54,7 @@ public class Vetor {
     return false;
   }
 
-  public void ordenarInsertSort() { // pior caso tem que executar o for e o while N vezes -> O(N^2) ; melhor caso
-                                    // O(N) quando o array já está ordenado
+  public void ordenarInsertSort() { // pior caso tem que executar o for e o while N vezes -> O(N^2) ; melhor caso  O(N) quando o array já está ordenado
     int n = this.tamanhoAtual;
     for (int i = 1; i < n; i++) { // N operações -> percorre todo o array que não está ordenado
       int valor = this.elementos[i]; // assume que o valor atual é o segundo elemento do array
