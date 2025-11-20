@@ -32,4 +32,20 @@ public class MedirTempo {
         return tempoTotal / repeticoes;
     }
 
+    public static long medirInsercaoAVL(int tamanho, int[] dados) {
+        long tempoTotal = 0;
+        for (int i = 0; i < repeticoes; i++) {
+            AVL arvore = new AVL();
+            long inicio = System.nanoTime();
+
+            for (int valor : dados) {
+                arvore.inserir(valor);
+            }
+            long fim = System.nanoTime();
+            tempoTotal += (fim - inicio);
+        }
+        return tempoTotal / repeticoes;
+    }
+    
+
 }
