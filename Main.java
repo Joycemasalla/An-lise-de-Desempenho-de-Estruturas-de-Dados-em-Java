@@ -77,16 +77,16 @@ public class Main {
         System.out.println("Buscar 20 (Existe): " + arvoreAVL.buscar(20));
         System.out.println("Buscar 99 (Não Existe): " + arvoreAVL.buscar(99));
 
-        System.out.println("\n==================================================");
+        System.out.println("\n==================================================\n");
         System.out.println("              MEDIÇÃO DE DESEMPENHO                 ");
 
         int[] tamanhos = { 100, 1000, 10000 };
         String[] ordens = { "Ordenada", "Inversamente Ordenada", "Aleatória" };
         GerarDados dadosTeste = new GerarDados();
 
-        System.out.println("\n==================================================");
-        System.out.println("MEDIÇÃO DO TEMPO DE INSERÇÃO ");
-        System.out.println("==================================================");
+        System.out.println("\n==================================================\n");
+        System.out.println("           MEDIÇÃO DO TEMPO DE INSERÇÃO               ");
+        System.out.println("====================================================");
 
         // Cabeçalho da Tabela (Melhor formato para o relatório)
         System.out.printf("| %-30s | %15s | %15s | %15s |%n",
@@ -132,12 +132,15 @@ public class Main {
                         tempoABBMs,
                         tempoAVLMs);
             }
+            System.out.println(
+                    "|--------------------------------|-----------------|-----------------|-----------------|");
+
         }
 
         System.out.println("==================================================");
         System.out.println("MEDIÇÃO DE INSERÇÃO CONCLUÍDA. Os tempos estão em milissegundos(ms).");
 
-        System.out.println("\n==================================================");
+        System.out.println("\n===================================================");
         System.out.println("          MEDIÇÃO DO TEMPO DE BUSCA                 ");
         System.out.println("====================================================");
 
@@ -151,15 +154,16 @@ public class Main {
         };
 
         // Cabeçalho da Tabela para busca
+
         System.out.printf("| %-30s | %-25s | %15s | %15s | %15s | %15s |%n",
                 "Cenário (Tamanho/Ordem)",
                 "Elemento Buscado",
-                "Vetor (Seq) (ms)", 
-                "Vetor (Bin) (ms)", 
+                "Vetor Seq (ms)",
+                "Vetor Bin (ms)",
                 "ABB (ms)",
                 "AVL (ms)");
         System.out.println(
-                "|--------------------------------|-------------------------|-----------------|-----------------|-----------------|-----------------|");
+                "|--------------------------------|---------------------------|-----------------|-----------------|-----------------|-----------------|");
 
         for (int tamanho : tamanhos) {
             for (String ordem : ordens) {
@@ -209,7 +213,8 @@ public class Main {
                     double tempoAVLMs = tempoAVL / 1_000_000.0;
 
                     String cenario = String.format("%d / %s", tamanho, ordem);
-                    System.out.printf("| %-30s | %-25s | %15.6f | %15.6f | %15.6f | %15.6f |%n",
+
+                    System.out.printf("| %-30s | %-25s | %15s | %15s | %15s | %15s |%n",
                             cenario,
                             tipoBusca,
                             tempoVetorSeqMs,
@@ -217,9 +222,52 @@ public class Main {
                             tempoABBMs,
                             tempoAVLMs);
                 }
-                System.out.println( "|--------------------------------|---------------------------|-----------------|-----------------|-----------------|-----------------|");
+                System.out.println(
+                        "|--------------------------------|---------------------------|-----------------|-----------------|-----------------|-----------------|");
             }
         }
         System.out.println("MEDIÇÃO DE BUSCA CONCLUÍDA. Os tempos estão em milissegundos (ms).");
+
+        System.out.println("\n==================================================");
+        System.out.println("          MEDIÇÃO DO TEMPO DE ORDENAÇÃO             ");
+        System.out.println("====================================================");
+
+        System.out.printf("| %-30s | %20s | %20s |%n",
+                "Cenário (Tamanho/Ordem)",
+                "Insertion Sort (ms)",
+                "QuickSort (ms)");
+        System.out.println("|--------------------------------|----------------------|----------------------|");
+
+        for (int tamanho : tamanhos) {
+            for (String ordem : ordens) {
+
+                int[] dados;
+
+                if (ordem.equals("Ordenada")) {
+                    dados = dadosTeste.gerarDadosOrdenados(tamanho);
+                } else if (ordem.equals("Inversamente Ordenada")) {
+                    dados = dadosTeste.gerarDadosInversos(tamanho);
+                } else {
+                    dados = dadosTeste.gerarDadosAleatorios(tamanho);
+                }
+
+                long tempoInsertSort = MedirTempo.medirOrdenacaoInsertSort(dados, tamanho);
+                long tempoQuickSort = MedirTempo.medirOrdenacaoQuickSort(dados, tamanho);
+
+                double tempoInsertSortMs = tempoInsertSort / 1_000_000.0;
+                double tempoQuickSortMs = tempoQuickSort / 1_000_000.0;
+
+                String cenario = String.format("%d / %s", tamanho, ordem);
+
+                System.out.printf("| %-30s | %20.3f | %20.3f |%n",
+                        cenario,
+                        tempoInsertSortMs,
+                        tempoQuickSortMs);
+            }
+            System.out.println("|--------------------------------|----------------------|----------------------|");
+        }
+
+        System.out.println("==================================================");
+        System.out.println("TODAS AS MEDIÇÕES CONCLUÍDAS. Os tempos estão em milissegundos (ms).");
     }
 }
